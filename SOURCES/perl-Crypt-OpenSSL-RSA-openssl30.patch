@@ -31,20 +31,10 @@ index c7d4bb7..3da6d1d 100644
  
          no_padding
 diff --git a/RSA.pm b/RSA.pm
-index 31e6949..1b63e99 100644
+index a08d9cc..b1a0e4b 100644
 --- a/RSA.pm
 +++ b/RSA.pm
-@@ -34,8 +34,7 @@ Crypt::OpenSSL::RSA - RSA encoding and decoding, using the openSSL libraries
-   Crypt::OpenSSL::Random::random_seed($good_entropy);
-   Crypt::OpenSSL::RSA->import_random_seed();
-   $rsa_pub = Crypt::OpenSSL::RSA->new_public_key($key_string);
--  $rsa_pub->use_sslv23_padding(); # use_pkcs1_oaep_padding is the default
--  $ciphertext = $rsa->encrypt($plaintext);
-+    $ciphertext = $rsa->encrypt($plaintext);
- 
-   $rsa_priv = Crypt::OpenSSL::RSA->new_private_key($key_string);
-   $plaintext = $rsa->encrypt($ciphertext);
-@@ -220,11 +219,6 @@ an empty encoding parameter. This mode of padding is recommended for
+@@ -248,13 +248,6 @@ an empty encoding parameter. This mode of padding is recommended for
  all new applications.  It is the default mode used by
  C<Crypt::OpenSSL::RSA>.
  
@@ -53,10 +43,12 @@ index 31e6949..1b63e99 100644
 -Use C<PKCS #1 v1.5> padding with an SSL-specific modification that
 -denotes that the server is SSL3 capable.
 -
+-Not available since OpenSSL 3.
+-
  =item use_md5_hash
  
  Use the RFC 1321 MD5 hashing algorithm by Ron Rivest when signing and
-@@ -267,7 +261,7 @@ the text to be encrypted should be:
+@@ -297,7 +290,7 @@ the text to be encrypted should be:
  
  at most 42 bytes less than this size.
  
@@ -66,18 +58,22 @@ index 31e6949..1b63e99 100644
  at most 11 bytes less than this size.
  
 diff --git a/RSA.xs b/RSA.xs
-index d474d11..711e4e7 100644
+index 5f5cfae..4bbe0ac 100644
 --- a/RSA.xs
 +++ b/RSA.xs
-@@ -640,12 +640,6 @@ use_pkcs1_oaep_padding(p_rsa)
+@@ -680,16 +680,6 @@ use_pkcs1_oaep_padding(p_rsa)
    CODE:
      p_rsa->padding = RSA_PKCS1_OAEP_PADDING;
  
+-#if OPENSSL_VERSION_NUMBER < 0x30000000L
+-
 -void
 -use_sslv23_padding(p_rsa)
 -    rsaData* p_rsa;
 -  CODE:
 -    p_rsa->padding = RSA_SSLV23_PADDING;
+-
+-#endif
 -
  # Sign text. Returns the signature.
  

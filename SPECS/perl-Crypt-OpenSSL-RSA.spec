@@ -1,6 +1,6 @@
 Name:           perl-Crypt-OpenSSL-RSA
-Version:        0.31
-Release:        13%{?dist}
+Version:        0.33
+Release:        1%{?dist}
 Summary:        Perl interface to OpenSSL for RSA
 License:        GPL+ or Artistic
 URL:            https://metacpan.org/release/Crypt-OpenSSL-RSA
@@ -61,6 +61,10 @@ make test
 %{_mandir}/man3/*
 
 %changelog
+* Thu Jun 20 2024 Martin Osvald <mosvald@redhat.com> - 0.33-1
+- New version 0.33 supporting passphrase protected keys
+  Resolves: RHEL-38780
+
 * Mon Aug 09 2021 Mohan Boddu <mboddu@redhat.com> - 0.31-13
 - Rebuilt for IMA sigs, glibc 2.34, aarch64 flags
   Related: rhbz#1991688
